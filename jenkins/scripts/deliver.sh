@@ -22,5 +22,22 @@ set +x
 
 echo 'The following command runs and outputs the execution of your Java'
 echo 'application (which Jenkins built using Maven) to the Jenkins UI.'
-set -x
-java -jar target/${NAME}-${VERSION}.jar
+# set -x
+# java -jar target/${NAME}-${VERSION}.jar
+
+# Construct the JAR file name using NAME and VERSION variables
+JAR_FILE="target/${NAME}-${VERSION}.jar"
+
+# Check if the "target" directory exists and if the JAR file exists before running it
+if [ -d "target" ] && [ -f "$JAR_FILE" ]; then
+  set -x
+  java -jar "$JAR_FILE"
+else
+  if [ ! -d "target" ]; then
+    echo "Error: The 'target' directory does not exist."
+  fi
+
+  if [ ! -f "$JAR_FILE" ]; then
+    echo "Error: The JAR file $JAR_FILE does not exist."
+  fi
+fi
